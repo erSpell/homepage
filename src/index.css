@@ -154,6 +154,31 @@ select {
   margin: 0;
 }
 
+.prompt-line {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  margin: 0 0 16px;
+}
+
+.cursor-top {
+  display: inline-block;
+  width: 8px;
+  height: 0.28em;
+  margin-bottom: 4px;
+  background: #7cff6f;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
 .terminal-input {
   width: 100%;
   padding: 12px 14px;
