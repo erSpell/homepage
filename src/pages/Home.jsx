@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PROJECTS } from '../data/projects'
 
@@ -12,7 +12,32 @@ const commands = [
 export default function Home() {
   const [input, setInput] = useState('')
   const [feedback, setFeedback] = useState('type /help for available commands')
+  const commandInputRef = useRef(null)
+  const focusTimeoutRef = useRef(null)
   const navigate = useNavigate()
+
+  const focusCommandInput = useCallback(() => {
+    const inputElement = commandInputRef.current
+
+    if (!inputElement) {
+      return
+    }
+
+    inputElement.focus()
+    inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length)
+  }, [])
+
+  useEffect(() => {
+    focusCommandInput()
+
+    return () => {
+      clearTimeout(focusTimeoutRef.current)
+    }
+  }, [focusCommandInput])
+
+  function handleInputBlur() {
+    focusTimeoutRef.current = setTimeout(focusCommandInput, 0)
+  }
 
   function handleNavigate(path) {
     navigate(path)
@@ -67,11 +92,13 @@ export default function Home() {
         </label>
         <span className="terminal-line">$</span>
         <input
+          ref={commandInputRef}
           id="home-command"
           className="terminal-command-input"
           style={{ width: `${Math.max(input.length, 1)}ch` }}
           value={input}
           onChange={(event) => setInput(event.target.value)}
+          onBlur={handleInputBlur}
           autoComplete="off"
           autoFocus
         />
