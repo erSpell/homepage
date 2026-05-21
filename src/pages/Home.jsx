@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { PROJECTS } from '../data/projects'
 
 const commands = [
   { key: 'home', label: 'Home', path: '/' },
@@ -8,10 +10,47 @@ const commands = [
 ]
 
 export default function Home() {
+  const [input, setInput] = useState('')
+  const [feedback, setFeedback] = useState('type /help for available commands')
   const navigate = useNavigate()
 
   function handleNavigate(path) {
     navigate(path)
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    const command = input.trim().toLowerCase()
+    setInput('')
+
+    if (!command || command === 'help' || command === '/help') {
+      setFeedback('commands: home, about, skills, portfolio, open <project>')
+      return
+    }
+
+    const route = commands.find((item) => item.key === command)
+
+    if (route) {
+      setFeedback(`running: ${route.key}`)
+      handleNavigate(route.path)
+      return
+    }
+
+    if (command.startsWith('open ')) {
+      const projectQuery = command.replace('open ', '').trim()
+      const project = PROJECTS.find((item) => {
+        return item.slug === projectQuery || item.title.toLowerCase() === projectQuery
+      })
+
+      if (project) {
+        setFeedback(`opening: ${project.slug}`)
+        handleNavigate(`/portfolio/${project.slug}`)
+        return
+      }
+    }
+
+    setFeedback(`command not found: ${command}`)
   }
 
   return (
@@ -20,12 +59,23 @@ export default function Home() {
       <p className="terminal-prompt">(c) nite_owl</p>
       <p className="terminal-prompt">C:\niteowl\main&gt;bash</p>
       <p className="terminal-prompt">
-        type /help for available commands
+        {feedback}
       </p>
-      <div className="prompt-line">
-        <span className="terminal-line">$ </span>
-        <span className="cursor-top"></span>
-      </div>
+      <form className="prompt-line" onSubmit={handleSubmit}>
+        <label className="sr-only" htmlFor="home-command">
+          Type a terminal command
+        </label>
+        <span className="terminal-line">$</span>
+        <input
+          id="home-command"
+          className="terminal-command-input"
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+          autoComplete="off"
+          autoFocus
+        />
+        {!input && <span className="cursor-top" aria-hidden="true"></span>}
+      </form>
       <div className="terminal-list">
         {commands.map((item, index) => (
           <span

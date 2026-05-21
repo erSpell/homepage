@@ -4,7 +4,6 @@ import About from './pages/About'
 import Skills from './pages/Skills'
 import Portfolio from './pages/Portfolio'
 import ProjectDetail from './pages/ProjectDetail'
-import CommandMenu from './components/CommandMenu'
 import './index.css'
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
                 <Route path="*" element={<Home />} />
               </Routes>
             </div>
-            <CommandMenu />
           </div>
         </section>
       </BrowserRouter>
