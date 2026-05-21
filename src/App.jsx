@@ -10,14 +10,7 @@ function App() {
   return (
     <div className="app-shell">
       <BrowserRouter>
-        <section className="terminal-container">
-          {/* <div className="terminal-bar">
-            <span className="terminal-dot red" />
-            <span className="terminal-dot yellow" />
-            <span className="terminal-dot green" />
-            <div className="terminal-title">portfolio-shell</div>
-          </div> */}
-
+        <section className="terminal-container">       
           <div className="terminal-body">
             <div className="terminal-screen">
               <Routes>
