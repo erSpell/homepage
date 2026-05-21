@@ -11,12 +11,12 @@ function App() {
     <div className="app-shell">
       <BrowserRouter>
         <section className="terminal-container">
-          <div className="terminal-bar">
+          {/* <div className="terminal-bar">
             <span className="terminal-dot red" />
             <span className="terminal-dot yellow" />
             <span className="terminal-dot green" />
             <div className="terminal-title">portfolio-shell</div>
-          </div>
+          </div> */}
 
           <div className="terminal-body">
             <div className="terminal-screen">

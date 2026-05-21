@@ -85,11 +85,11 @@ select {
   text-transform: uppercase;
 }
 
-.terminal-body {
+/* .terminal-body {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 52px);
-}
+} */
 
 .terminal-screen {
   flex: 1;
