@@ -69,12 +69,13 @@ export default function Home() {
         <input
           id="home-command"
           className="terminal-command-input"
+          style={{ width: `${Math.max(input.length, 1)}ch` }}
           value={input}
           onChange={(event) => setInput(event.target.value)}
           autoComplete="off"
           autoFocus
         />
-        {!input && <span className="cursor-top" aria-hidden="true"></span>}
+        <span className="cursor-top" aria-hidden="true"></span>
       </form>
       <div className="terminal-list">
         {commands.map((item, index) => (
