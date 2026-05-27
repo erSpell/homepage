@@ -9,9 +9,11 @@ const commands = [
   { key: 'portfolio', label: 'Portfolio', path: '/portfolio' },
 ]
 
+const helpText = 'commands: home, about, skills, portfolio, open <project>'
+
 export default function Home() {
   const [input, setInput] = useState('')
-  const [feedback, setFeedback] = useState('type /help for available commands')
+  const [feedback, setFeedback] = useState({ type: 'hint' })
   const commandInputRef = useRef(null)
   const focusTimeoutRef = useRef(null)
   const navigate = useNavigate()
@@ -43,6 +45,11 @@ export default function Home() {
     navigate(path)
   }
 
+  function showHelp() {
+    setFeedback({ type: 'text', message: helpText })
+    focusCommandInput()
+  }
+
   function handleSubmit(event) {
     event.preventDefault()
 
@@ -50,14 +57,14 @@ export default function Home() {
     setInput('')
 
     if (!command || command === 'help' || command === '/help') {
-      setFeedback('commands: home, about, skills, portfolio, open <project>')
+      showHelp()
       return
     }
 
     const route = commands.find((item) => item.key === command)
 
     if (route) {
-      setFeedback(`running: ${route.key}`)
+      setFeedback({ type: 'text', message: `running: ${route.key}` })
       handleNavigate(route.path)
       return
     }
@@ -69,13 +76,34 @@ export default function Home() {
       })
 
       if (project) {
-        setFeedback(`opening: ${project.slug}`)
+        setFeedback({ type: 'text', message: `opening: ${project.slug}` })
         handleNavigate(`/portfolio/${project.slug}`)
         return
       }
     }
 
-    setFeedback(`command not found: ${command}`)
+    setFeedback({ type: 'text', message: `command not found: ${command}` })
+  }
+
+  function renderFeedback() {
+    if (feedback.type !== 'hint') {
+      return feedback.message
+    }
+
+    return (
+      <>
+        type{' '}
+        <button
+          className="terminal-help-command"
+          type="button"
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={showHelp}
+        >
+          /help
+        </button>{' '}
+        for available commands
+      </>
+    )
   }
 
   return (
@@ -84,7 +112,7 @@ export default function Home() {
       <p className="terminal-prompt">(c) nite_owl</p>
       <p className="terminal-prompt">C:\niteowl\main&gt;bash</p>
       <p className="terminal-prompt">
-        {feedback}
+        {renderFeedback()}
       </p>
       <form className="prompt-line" onSubmit={handleSubmit}>
         <label className="sr-only" htmlFor="home-command">
