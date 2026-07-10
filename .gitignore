@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Local Hermes/session artifacts
+.hermes/
+__pycache__/
+local_notes/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
